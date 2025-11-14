@@ -22,9 +22,12 @@ target_include_directories(glew PUBLIC lib/glew/include)
 target_compile_definitions(glew PRIVATE GLEW_STATIC)
 
 # GLM
-add_subdirectory(lib/glm)
+target_include_directories(main PRIVATE lib/glm)
 
-target_link_libraries(main PRIVATE glfw glew glm)
+# STB
+target_include_directories(main PRIVATE lib/stb)
+
+target_link_libraries(main PRIVATE glfw glew)
 
 find_package(OpenGL REQUIRED)
 target_link_libraries(main PRIVATE OpenGL::GL)
