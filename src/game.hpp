@@ -1,20 +1,21 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
+#include "visual.hpp"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 class Game
 {
 private:
-	// window size
-	int width, height;
-	// window conf
-	GLFWwindow *window = nullptr;
-
+	bool finished = false;
+	int frame     = 60;
+	
+	Visual v;
 public:
-	Game(const char *name, int width, int height);
-	~Game();
+	Game();
+
 	void run();
 };
 

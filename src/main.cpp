@@ -1,9 +1,8 @@
-#include <iostream>
-#include "game.hpp"
+#include "visual.hpp"
 
 int main()
 {
-    Game game {"hello world", 800, 600};
-    game.run();
+    Visual v("game", 800, 600);
+    v.run();
     return 0;
 }
