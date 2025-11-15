@@ -27,6 +27,8 @@ target_include_directories(main PRIVATE lib/glm)
 # STB
 target_include_directories(main PRIVATE lib/stb)
 
+target_include_directories(main PRIVATE inc/)
+
 target_link_libraries(main PRIVATE glfw glew)
 
 find_package(OpenGL REQUIRED)
