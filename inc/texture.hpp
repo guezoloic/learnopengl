@@ -3,8 +3,6 @@
 
 #include <GL/glew.h>
 #include <string>
-#include <filesystem>
-#include <stb_image.h>
 
 class Texture
 {
@@ -13,11 +11,9 @@ private:
 
 public:
     Texture(const std::string& path);
-
     ~Texture();
 
     void bind(GLenum textureUnit) const;
-
     unsigned int getID() const;
 };
 
