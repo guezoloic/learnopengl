@@ -6,19 +6,29 @@
 class Shader
 {
  private:
-  GLuint vertexShader;
-  GLuint fragmentShader;
-  GLuint shaderProgram;
+  GLuint vertexShaderID;      // vertex shader id
+  GLuint fragmentShaderID;    // fragment shader id
 
-  void addVertShader(const char* vertexShaderSource);
-  void addFragShader(const char* fragmentShaderSource);
+  // final compiled shader program id used by the gpu
+  GLuint shaderProgramID;
+
+  // compile vertex shader source code
+  void addVertShader(const char* vertexSource);
+  // compile fragment shader source code
+  void addFragShader(const char* fragmentSource);
+  // link both compile vertex and fragment shader
   void compileInProgram();
 
  public:
-  Shader(const char* vertexShaderSource, const char* fragmentShaderSource);
+  // Does nothing apart initializing all IDs to 0
+  Shader();
+  // compile and link vertex and fragment into the shader struct
+  void compile(const char* vertexSource, const char* fragmentSource);
+  // free shader program
   ~Shader();
 
-  GLuint getProgram() const;
+  GLuint getShaderProgramID() const;
+  // activate shader program into gpu pipeline
   void use() const;
 };
 
