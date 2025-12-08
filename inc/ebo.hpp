@@ -5,15 +5,16 @@
 
 #include "glad/glad.h"
 
-
 class EBO
 {
  private:
   GLuint id;
 
  public:
-  EBO(unsigned int* indices, size_t size);
+  EBO();
   ~EBO();
+
+  void setData(unsigned int* indices, size_t size);
 
   void bind();
   void unbind();

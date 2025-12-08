@@ -11,8 +11,10 @@ class VBO
   unsigned int id;
 
  public:
-  VBO(GLfloat* vertices, size_t size);
+  VBO();
   ~VBO();
+
+  void setData(GLfloat* vertices, size_t size);
 
   void bind();
   void unbind();

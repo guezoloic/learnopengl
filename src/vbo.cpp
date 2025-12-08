@@ -1,14 +1,16 @@
 #include "vbo.hpp"
 
-VBO::VBO(GLfloat* vertices, size_t size)
+VBO::VBO() : id(0) {}
+
+void VBO::setData(GLfloat* vertices, size_t size)
 {
-  glGenBuffers(1, &id);
-  glBindBuffer(GL_ARRAY_BUFFER, id);
+  if (this->id == 0) glGenBuffers(1, &this->id);
+  glBindBuffer(GL_ARRAY_BUFFER, this->id);
   glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 }
 
-VBO::~VBO() { glDeleteBuffers(1, &id); }
+VBO::~VBO() { glDeleteBuffers(1, &this->id); }
 
-void VBO::bind() { glBindBuffer(GL_ARRAY_BUFFER, id); }
+void VBO::bind() { glBindBuffer(GL_ARRAY_BUFFER, this->id); }
 
 void VBO::unbind() { glBindBuffer(GL_ARRAY_BUFFER, 0); }
