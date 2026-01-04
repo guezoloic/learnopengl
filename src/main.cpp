@@ -1,101 +1,114 @@
+#include <cstddef>
+#include <cstdlib>
+#include <iostream>
+
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-
-#include <cstdio>
-// #include <cstdlib>
-#include <iostream>
-#include <ostream>
+// #include "imgui.h"
+// #include "backends/imgui_impl_glfw.h"
+// #include "backends/imgui_impl_opengl3.h"
 
 #include "camera.hpp"
 #include "cube.hpp"
-#include "glm/ext/vector_float3.hpp"
 
-static void glfwErrorCallback(int error, const char *description)
+constexpr const char *WINDOW_NAME = "window";
+
+int width = 800;
+int height = 600;
+
+int main(void)
 {
-  std::cerr << "GLFW Error " << error << ": " << description << std::endl;
-}
+  // define error callback
+  glfwSetErrorCallback(
+      [](int error, const char *desc)
+      { std::cerr << "GLFW ERROR (" << error << "): " << desc << std::endl; });
 
-int main()
-{
-    const char *title = "window";
-    int width = 800, height = 600;
+  if (glfwInit() == GLFW_FALSE)
+  {
+    std::cerr << "GLFW ERROR: Failed to initialize glfw." << std::endl;
+    return EXIT_FAILURE;
+  }
 
-    glfwSetErrorCallback(glfwErrorCallback);
+  // OpenGL CORE 4.1
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  // window properties
+  glfwWindowHint(GLFW_DEPTH_BITS, 24);   // set depth buffer to 3 bytes  (24 bits)
+  glfwWindowHint(GLFW_STENCIL_BITS, 8);  // set stencil buffer to 1 byte (8 bits)
+  glfwWindowHint(GLFW_SAMPLES, 4);       // activate MSAA (4 samples per pixels)
+#ifdef __APPLE__
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+                 GL_TRUE);               // disable deprecated functionalities
+#endif
 
-    if (glfwInit() == GLFW_FALSE)
-    {
-      std::cerr << "ERROR(GLFW): initialisation error" << std::endl;
-      exit(EXIT_FAILURE);
-    }
+  GLFWwindow *window =
+      glfwCreateWindow(width, height, WINDOW_NAME, nullptr, nullptr);
 
-    // OpenGL 3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_DEPTH_BITS, 24);
-    glfwWindowHint(GLFW_STENCIL_BITS, 8);
-    glfwWindowHint(GLFW_SAMPLES, 4);
-  #ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  #endif
+  if (window == NULL)
+  {
+    std::cerr << "GLFW ERROR: Failed to create GLFW window." << std::endl;
+    glfwTerminate();
+    return EXIT_FAILURE;
+  }
 
-    GLFWwindow *window = glfwCreateWindow(width, height, title, nullptr,
-    nullptr); if (window == nullptr)
-    {
-      std::cerr
-          << "ERROR: Failed to create GLFW window with requested GL version."
-          << std::endl;
-      glfwTerminate();
-      exit(EXIT_FAILURE);
-    }
+  glfwMakeContextCurrent(window);
 
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-      std::cerr << "ERROR: Failed to initialize GLAD" << std::endl;
-      glfwDestroyWindow(window);
-      glfwTerminate();
-      exit(EXIT_FAILURE);
-    }
-
-    glfwSwapInterval(1);
-
-    Camera camera(width, height, window, 0.1f);
-    Cube cube{camera, glm::vec3 {0.f, 0.f, 0.f}, "stone.png"};
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-
-    double deltaTime = 0.f;
-    double lastTime = glfwGetTime();
-    while (!glfwWindowShouldClose(window))
-    {
-      glfwGetFramebufferSize(window, &width, &height);
-      glViewport(0, 0, width, height);
-
-      glClearColor(0.5f, 0.2f, 0.2f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      double currentTime = glfwGetTime();
-      deltaTime = currentTime - lastTime;
-      lastTime = currentTime;
-
-      camera.update(deltaTime);
-      cube.render(width, height);
-
-      glfwPollEvents();
-      glfwSwapBuffers(window);
-
-      GLenum error = glGetError();
-      if (error != GL_NO_ERROR)
-      {
-        std::cerr << "error:" << error << std::endl;
-        exit(1);
-      }
-    }
-
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+  {
+    std::cerr << "GLAD ERROR: Failed to initialize GLAD" << std::endl;
     glfwDestroyWindow(window);
     glfwTerminate();
-  return 0;
+    return EXIT_FAILURE;
+  }
+
+  glfwSwapInterval(1);
+
+  // IMGUI_CHECKVERSION();
+  // ImGui::CreateContext();
+  // ImGuiIO &io = ImGui::GetIO();
+  // (void)io;
+
+  // ImGui::StyleColorsDark();
+
+  // ImGui_ImplGlfw_InitForOpenGL(window, true);
+  // ImGui_ImplOpenGL3_Init("#version 410");
+
+  Camera camera(width, height, window, 0.1f);
+  Cube cube{camera, glm::vec3{0.f, 0.f, 0.f}, "stone.png"};
+
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_MULTISAMPLE);
+
+  double deltaTime = 0.f;
+  double lastTime = glfwGetTime();
+  while (!glfwWindowShouldClose(window))
+  {
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
+
+    glClearColor(0.5f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    double currentTime = glfwGetTime();
+    deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+
+    camera.update(deltaTime);
+    cube.render(width, height);
+
+    glfwPollEvents();
+    glfwSwapBuffers(window);
+
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+      std::cerr << "error:" << error << std::endl;
+      exit(1);
+    }
+  }
+
+  glfwDestroyWindow(window);
+  glfwTerminate();
+  return EXIT_SUCCESS;
 }
