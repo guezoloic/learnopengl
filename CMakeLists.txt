@@ -4,11 +4,22 @@ project(learnopengl)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/**/*.cpp")
+file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/**/*.cpp ")
 
 # GLAD (add C file)
-list(APPEND CPP_SOURCES lib/glad/src/glad.c)
+list(APPEND CPP_SOURCES "lib/glad/src/glad.c")
 
+# ImGUI (add CPP files)
+set(IMGUI_SOURCES
+  "lib/imgui/imgui.cpp"
+  "lib/imgui/imgui_draw.cpp"
+  "lib/imgui/imgui_tables.cpp"
+  "lib/imgui/imgui_widgets.cpp"
+  "lib/imgui/backends/imgui_impl_glfw.cpp"
+  "lib/imgui/backends/imgui_impl_opengl3.cpp"
+)
+
+list(APPEND CPP_SOURCES ${IMGUI_SOURCES})
 # find shader files
 file(GLOB_RECURSE SHADERS CONFIGURE_DEPENDS
   "res/**/*.frag"
@@ -21,8 +32,6 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/shaders)
 
 set(SHADER_C_FILES)
 foreach(SHADER ${SHADERS})
-  message(${SHADER})
-
   get_filename_component(NAME_WE ${SHADER} NAME_WE)
   get_filename_component(EXT ${SHADER} EXT)
   string(REPLACE "." "_" EXT_SAFE ${EXT})
@@ -30,12 +39,12 @@ foreach(SHADER ${SHADERS})
 
   add_custom_command(
     OUTPUT ${OUTPUT_C}
-    COMMAND python3 
-            ${CMAKE_SOURCE_DIR}/glsl2c.py 
-            ${SHADER} 
-            ${OUTPUT_C}
-    DEPENDS ${SHADER} 
-            ${CMAKE_SOURCE_DIR}/glsl2c.py
+    COMMAND python3
+    ${CMAKE_SOURCE_DIR}/glsl2c.py
+    ${SHADER}
+    ${OUTPUT_C}
+    DEPENDS ${SHADER}
+    ${CMAKE_SOURCE_DIR}/glsl2c.py
     COMMENT "Converting shader ${NAME_WE}${EXT} to C file"
     VERBATIM
   )
@@ -57,6 +66,7 @@ target_include_directories(main PRIVATE
   lib/glfw/include # glfw
   lib/glm # glm
   lib/imgui # imgui
+  "lib/imgui/backends # imgui backends"
   lib/stb # stb
 )
 
