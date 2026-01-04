@@ -4,7 +4,7 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "primitives/p_cube.hpp"
+#include "p_cube.hpp"
 #include "vao.hpp"
 #include "vbo.hpp"
 
