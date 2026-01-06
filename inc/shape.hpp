@@ -1,13 +1,13 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
-#include "camera.hpp"
-#include "ebo.hpp"
+#include "core/camera.hpp"
+#include "core/ebo.hpp"
+#include "core/shader.hpp"
+#include "core/texture.hpp"
+#include "core/vao.hpp"
+#include "core/vbo.hpp"
 #include "glm/ext/vector_float3.hpp"
-#include "shader.hpp"
-#include "texture.hpp"
-#include "vao.hpp"
-#include "vbo.hpp"
 
 class Shape
 {

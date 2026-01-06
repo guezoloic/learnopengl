@@ -1,10 +1,9 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include "glm/ext/vector_float3.hpp"
+#include "GLFW/glfw3.h"
 #include "glm/ext/matrix_float4x4.hpp"
-
-struct GLFWwindow;
+#include "glm/ext/vector_float3.hpp"
 
 class Camera
 {

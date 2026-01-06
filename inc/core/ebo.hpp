@@ -4,7 +4,8 @@
 #include <stddef.h>
 
 #include "glad/glad.h"
-
+namespace core
+{
 class EBO
 {
  private:
@@ -19,4 +20,5 @@ class EBO
   void bind();
   void unbind();
 };
-#endif
+};  // namespace core
+#endif  // EBO_HPP
