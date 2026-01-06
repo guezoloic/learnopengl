@@ -1,4 +1,4 @@
-#include "cube.hpp"
+#include "res/inc/cube.hpp"
 
 #include "ebo.hpp"
 #include "glm/ext/matrix_clip_space.hpp"

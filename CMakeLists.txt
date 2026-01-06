@@ -61,12 +61,12 @@ add_dependencies(main Shaders)
 
 target_include_directories(main PRIVATE
   inc # project
-  res/render # ressources (primitive)
+  res/inc # ressources (primitive)
   lib/glad/include # glad
   lib/glfw/include # glfw
   lib/glm # glm
   lib/imgui # imgui
-  "lib/imgui/backends # imgui backends"
+  lib/imgui/backends # imgui backends
   lib/stb # stb
 )
 
