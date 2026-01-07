@@ -5,6 +5,8 @@
 
 #include "glad/glad.h"
 
+namespace core
+{
 // A VBO (Vertex Buffer Object) is a contiguous block of GPU memory that stores
 // vertex data as raw bytes.
 class VBO
@@ -29,5 +31,6 @@ class VBO
   // unbinds current GL_ARRAY_BUFFER target (it's replaced by null id)
   static void unbind();
 };
+}  // namespace core
 
 #endif
