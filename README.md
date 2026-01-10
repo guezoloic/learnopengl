@@ -290,6 +290,12 @@ int main()
    > Update viewport => Clear screen => Use shader => Draw geometry => Poll events => Swap buffers => Check errors.
 
 4. cleanup
+   
+   ```cpp
+   // ========== Destroy window and terminate GLFW ==========
+   glfwDestroyWindow(window);
+   glfwTerminate();
+   ```
 
 ## Acknowledge
 
