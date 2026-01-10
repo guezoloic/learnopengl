@@ -254,7 +254,40 @@ int main()
    
    > Bind VAO => Bind VBO/EBO => Set attributes => Later draw using VAO => GPU knows exactly how to fetch vertices and indices.
 
-3. Main loop rendering
+3. **Main loop rendering**
+   
+   ```cpp
+   while (!glfwWindowShouldClose(window))
+   {
+       // ========== Update viewport ==========
+       glfwGetFramebufferSize(window, &width, &height);
+       glViewport(0, 0, width, height);
+   
+       // ========== Clear screen ==========
+       glClearColor(0.5f, 0.2f, 0.2f, 1.0f); // Background color
+       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth
+   
+       // ========== Use shader ==========
+       shader.use();
+   
+       // ========== Draw triangle ==========
+       vao.drawElement(GL_TRIANGLES, mesh::P_TRIANGLE_INDICE_LEN, GL_UNSIGNED_INT, 0);
+   
+       // ========== Poll events and swap buffers ==========
+       glfwPollEvents();
+       glfwSwapBuffers(window);
+   
+       // ========== Check for OpenGL errors ==========
+       GLenum error = glGetError();
+       if (error != GL_NO_ERROR)
+       {
+           core::log::error("", error);
+           std::exit(EXIT_FAILURE);
+       }
+   }
+   ```
+   
+   > Update viewport => Clear screen => Use shader => Draw geometry => Poll events => Swap buffers => Check errors.
 
 4. cleanup
 
